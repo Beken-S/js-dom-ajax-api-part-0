@@ -8,6 +8,7 @@ const SEARCH_PARAMS = new URLSearchParams([
     ['limit', 10],
 ]);
 
+// тайп гарды
 function isObject(value) {
     return typeof value === 'object' && value != null;
 }

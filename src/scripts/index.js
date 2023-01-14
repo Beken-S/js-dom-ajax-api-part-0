@@ -7,7 +7,9 @@ import { getScoresMarkup } from './components/scores';
 import { BaseError, ERROR_CODE } from './common/errors';
 import { getRenderTo } from './common/utils';
 
+// объект для работы с localStorage
 const history = new SearchHistory(100);
+
 const searchBoxElement = document.querySelector('.search-box');
 const fieldElement = searchBoxElement.querySelector('.search-box__field');
 const suggestionsElement = searchBoxElement.querySelector('.search-box__suggestions-list');
@@ -36,28 +38,35 @@ function init() {
     fieldElement.value = '';
     renderHistory(history.getRecentSearchQueries(3));
 }
+
+// для обработки ввода с клавиатуры поискового запроса
 async function inputQueryHandler(event) {
+    // флаг для предотвращения отрисовки предложений после события 'submit'
     sessionStorage.setItem('isSubmit', false);
     const query = event.target.value;
 
     if (!query) {
-        renderSuggestions();
+        // если null, undefined, ''
+        renderSuggestions(); // очистить детей внутри блока с предложениями
         return;
     }
 
+    // найти 5 недавних запросов
     const [recentSuggestionsId, recentSuggestions] = history.findRecentSearchQueries(query, 5);
 
     if (recentSuggestions != null) {
-        renderSuggestions(recentSuggestions, null, query);
-        selectSuggestion('update');
+        renderSuggestions(recentSuggestions, null, query); // отрисовать
+        selectSuggestion('update'); // обновить замыкание хранящее первое, последнее и выбранное предложение
     }
 
-    const [newSuggestions, error] = await onlyLastSearchCity(event.target.value);
+    const [newSuggestions, error] = await onlyLastSearchCity(query);
 
+    // если за время ожидания промиса пользователь отправил форму прекратить выполнение функции
     if (JSON.parse(sessionStorage.getItem('isSubmit'))) {
         return;
     }
     if (error) {
+        // отфильтровать ошибку возникающую при отмене fetch
         if (!(error instanceof DOMException)) {
             console.error(error);
         }
@@ -69,6 +78,8 @@ async function inputQueryHandler(event) {
     if (newSuggestions != null && recentSuggestions != null) {
         const maxSuggestionsCount = 10;
         const maxNewSuggestionsCount = maxSuggestionsCount - recentSuggestions.length;
+
+        // отфильтровать из нового поиска выбранные предыдущие варианты
         currentSuggestions = newSuggestions
             .filter((suggestion) => !recentSuggestionsId.includes(suggestion.id))
             .slice(0, maxNewSuggestionsCount);
@@ -77,7 +88,7 @@ async function inputQueryHandler(event) {
     }
 
     renderSuggestions(recentSuggestions, currentSuggestions, query);
-    selectSuggestion('update');
+    selectSuggestion('update'); // обновить замыкание хранящее первое, последнее и выбранное предложение
 }
 async function showScoresHandler(event) {
     renderOutput('Loading...');
@@ -97,9 +108,11 @@ async function showScoresHandler(event) {
     }
     renderOutput(getScoresMarkup(scores));
 }
+
+// для возможность выбора предложения стрелками на клавиатуре
 function suggestionSelectionHandler(event) {
     if (event.code === 'ArrowDown') {
-        const current = selectSuggestion('next');
+        const current = selectSuggestion('next'); // выбрать следующее предложение
 
         if (current != null) {
             fieldElement.value = current.dataset.suggestion;
@@ -107,20 +120,24 @@ function suggestionSelectionHandler(event) {
     }
     if (event.code === 'ArrowUp') {
         event.preventDefault();
-        const current = selectSuggestion('previous');
+        const current = selectSuggestion('previous'); // выбрать предыдущее предложение
 
         if (current != null) {
             fieldElement.value = current.dataset.suggestion;
         }
     }
 }
+
+// для обработки отправки формы
 function submitQueryHandler(event) {
     event.preventDefault();
     sessionStorage.setItem('isSubmit', true);
-    let currentSuggestions = selectSuggestion();
+    let currentSuggestions = selectSuggestion(); // получить текущий пункт
     if (currentSuggestions == null) {
+        // если null попробовать получить первый пункт
         currentSuggestions = selectSuggestion('first');
         if (currentSuggestions == null) {
+            // если null очистить строку ввода
             fieldElement.value = '';
             return;
         }
@@ -131,10 +148,10 @@ function submitQueryHandler(event) {
         suggestion: currentSuggestions.dataset.suggestion,
     };
     document.dispatchEvent(new CustomEvent('showScore', { detail: suggestion.link }));
-    history.add(suggestion);
+    history.add(suggestion); // добавляем запрос в localStorage
     fieldElement.value = '';
-    renderSuggestions();
-    selectSuggestion('update');
+    renderSuggestions(); // удалить дочерние элементы
+    selectSuggestion('update'); // // обновить замыкание хранящее первое, последнее и выбранное предложение
     renderHistory(history.getRecentSearchQueries(3));
 }
 function suggestionClickHandler(event) {
@@ -154,11 +171,14 @@ function suggestionClickHandler(event) {
         renderHistory(history.getRecentSearchQueries(3));
     }
 }
+
+// для обновления истории поиска на другой вкладке
 function historyChangeHandler(event) {
     if ((event.key = 'searchHistory')) {
         renderHistory(history.getRecentSearchQueries(3));
     }
 }
+
 function historyClickHandler(event) {
     const element = event.target;
 

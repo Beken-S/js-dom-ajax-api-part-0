@@ -1,3 +1,4 @@
+// для отмены предыдущего fetch если следующи выполнился раньше него
 function onlyLast(callee) {
     let controller = new AbortController();
     let isOverPreviousCall = true;
