@@ -1,4 +1,4 @@
-import { getRenderTo, getHide, getShow, getSelectChildrenSequentially, escape } from '../../common/utils';
+import { getHide, getShow, getSelectChildrenSequentially, escape } from '../../common/utils';
 
 function cerateSuggestionsOptions({ id, link, suggestion }, query, visited = false) {
     const regex = new RegExp(`(${escape(query)})`, 'i');
@@ -35,17 +35,16 @@ function getSuggestionsOptions(previousSuggestions, currentSuggestions, query) {
 }
 
 function getRenderToSuggestions(suggestionsElement) {
-    const render = getRenderTo(suggestionsElement);
     const hide = getHide(suggestionsElement);
     const show = getShow(suggestionsElement);
 
     return function (previousSuggestions, currentSuggestions, query) {
         if ((previousSuggestions == null && currentSuggestions == null) || !query) {
-            render('');
+            suggestionsElement.replaceChildren('');
             hide();
             return;
         }
-        render(getSuggestionsOptions(previousSuggestions, currentSuggestions, query));
+        suggestionsElement.replaceChildren(getSuggestionsOptions(previousSuggestions, currentSuggestions, query));
         show();
     };
 }

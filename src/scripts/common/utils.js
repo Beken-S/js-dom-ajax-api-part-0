@@ -15,10 +15,6 @@ function getShow(element) {
     };
 }
 
-function getRenderTo(to) {
-    return to.replaceChildren.bind(to);
-}
-
 function getSelectChildrenSequentially(element, addedClassName) {
     let currentChild = null;
 
@@ -97,4 +93,4 @@ function getSelectChildrenSequentially(element, addedClassName) {
     };
 }
 
-export { getHide, getShow, getRenderTo, getSelectChildrenSequentially, escape };
+export { getHide, getShow, getSelectChildrenSequentially, escape };

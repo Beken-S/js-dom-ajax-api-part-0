@@ -1,5 +1,4 @@
 import { escape } from '../../common/utils';
-import { getRenderTo } from '../../common/utils';
 
 class SearchHistory {
     constructor(maxLength) {
@@ -75,13 +74,12 @@ function getHistoryItems(suggestions) {
 }
 
 function getRenderToHistory(historyElement) {
-    const render = getRenderTo(historyElement);
     return function (suggestions) {
         if (suggestions == null) {
-            render('');
+            historyElement.replaceChildren('');
             return;
         }
-        render(getHistoryItems(suggestions));
+        historyElement.replaceChildren(getHistoryItems(suggestions));
     };
 }
 

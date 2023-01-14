@@ -5,7 +5,6 @@ import { SearchHistory, getRenderToHistory } from './components/search-history';
 import { getRenderToSuggestions, getSelectSuggestion } from './components/suggestions';
 import { getScoresMarkup } from './components/scores';
 import { BaseError, ERROR_CODE } from './common/errors';
-import { getRenderTo } from './common/utils';
 
 // объект для работы с localStorage
 const history = new SearchHistory(100);
@@ -18,7 +17,6 @@ const outputElement = document.querySelector('.output');
 
 const renderSuggestions = getRenderToSuggestions(suggestionsElement);
 const renderHistory = getRenderToHistory(historyElement);
-const renderOutput = getRenderTo(outputElement);
 const selectSuggestion = getSelectSuggestion(suggestionsElement);
 const onlyLastSearchCity = onlyLast(searchCity);
 const onlyLastGetScores = onlyLast(getScores);
@@ -91,12 +89,12 @@ async function inputQueryHandler(event) {
     selectSuggestion('update'); // обновить замыкание хранящее первое, последнее и выбранное предложение
 }
 async function showScoresHandler(event) {
-    renderOutput('Loading...');
+    outputElement.replaceChildren('Loading...');
 
     const [scores, error] = await onlyLastGetScores(event.detail);
 
     if (error instanceof BaseError && error.status === ERROR_CODE.NotFound) {
-        renderOutput(error.message);
+        outputElement.replaceChildren(error.message);
         return;
     }
 
@@ -106,7 +104,7 @@ async function showScoresHandler(event) {
         }
         return;
     }
-    renderOutput(getScoresMarkup(scores));
+    outputElement.replaceChildren(getScoresMarkup(scores));
 }
 
 // для возможность выбора предложения стрелками на клавиатуре
