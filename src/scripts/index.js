@@ -172,7 +172,7 @@ function suggestionClickHandler(event) {
 
 // для обновления истории поиска на другой вкладке
 function historyChangeHandler(event) {
-    if ((event.key = 'searchHistory')) {
+    if (event.key === 'searchHistory') {
         renderHistory(history.getRecentSearchQueries(3));
     }
 }
