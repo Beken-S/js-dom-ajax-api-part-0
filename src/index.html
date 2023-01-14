@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title></title>
+        <link rel="stylesheet" href="./styles/index.less" />
+        <title>App</title>
     </head>
-    <body></body>
+    <body>
+        <div class="container">
+            <div class="container__search-box">
+                <h2 class="h2">Find your best place to live and work</h2>
+                <form class="search-box" action="submit">
+                    <input class="search-box__field" type="text" />
+                    <button class="search-box__button" type="submit">
+                        <svg
+                            class="search-box__icon"
+                            width="22px"
+                            height="22px"
+                            viewBox="0 0 32 32"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                        >
+                            <g id="icomoon-ignore"></g>
+                            <path
+                                d="M28.591 27.273l-7.263-7.264c1.46-1.756 2.339-4.010 2.339-6.471 0-5.595-4.535-10.129-10.129-10.129-5.594 0-10.129 4.535-10.129 10.129 0 5.594 4.536 10.129 10.129 10.129 2.462 0 4.716-0.879 6.471-2.339l7.263 7.264 1.319-1.319zM4.475 13.538c0-4.997 4.065-9.063 9.063-9.063 4.997 0 9.063 4.066 9.063 9.063s-4.066 9.063-9.063 9.063c-4.998 0-9.063-4.066-9.063-9.063z"
+                            ></path>
+                        </svg>
+                    </button>
+                    <ul class="search-box__suggestions-list hidden"></ul>
+                </form>
+            </div>
+            <div class="container__output">
+                <div class="output"></div>
+            </div>
+            <div class="container__history">
+                <h2 class="h2">Search history</h2>
+                <ul class="history"></ul>
+            </div>
+        </div>
+        <script type="module" src="./scripts/index.js"></script>
+    </body>
 </html>

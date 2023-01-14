@@ -1,0 +1,27 @@
+.container {
+    display: grid;
+    grid-template-areas:
+        's s h'
+        'o o h';
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 60px;
+    box-sizing: border-box;
+    max-width: 1024px;
+    height: 100vh;
+    margin: 0 auto;
+    padding: 20px 10px;
+
+    &__search-box {
+        grid-area: s;
+    }
+
+    &__output {
+        grid-area: o;
+    }
+
+    &__history {
+        grid-area: h;
+        min-width: 400px;
+    }
+}

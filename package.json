@@ -1,14 +1,17 @@
 {
   "name": "js-dom-ajax-api-part-0",
   "version": "1.0.0",
+  "homepage": "https://beken-s.github.io/js-dom-ajax-api-part-0/",
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build"
+    "build": "parcel build",
+    "deploy": "gh-pages -d dist"
   },
   "author": "Sarsenbaev Beken",
   "devDependencies": {
     "@parcel/transformer-less": "^2.8.2",
+    "gh-pages": "^4.0.0",
     "less": "^4.1.3",
     "parcel": "^2.8.2",
     "prettier": "^2.8.2",

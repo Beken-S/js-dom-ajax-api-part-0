@@ -1,0 +1,86 @@
+.search-box {
+    display: grid;
+    grid-template-areas:
+        'sf sb'
+        'sg sg';
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr auto;
+    box-sizing: border-box;
+    background-color: @color-background;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px 0 @color-shadow;
+    transition: background-color 0.2s;
+
+    &__field {
+        grid-area: sf;
+        height: 40px;
+        margin: 0;
+        padding: 0 2px 0 40px;
+        color: inherit;
+        font: inherit;
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    &__button {
+        grid-area: sb;
+        height: 40px;
+        margin: 0;
+        padding: 0 20px 0 14px;
+        color: @color-text-neutral;
+        background: none;
+        border: none;
+        transition: color 0.2s;
+
+        &:hover {
+            color: @color-secondary;
+            cursor: pointer;
+        }
+    }
+
+    &__icon {
+        vertical-align: middle;
+        fill: currentColor;
+    }
+
+    &__suggestions-list {
+        grid-area: sg;
+        margin-top: 0;
+        margin-bottom: 8px;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    &__suggestions-item {
+        padding: 8px 40px;
+
+        &:hover {
+            background-color: @color-neutral-light;
+        }
+    }
+}
+
+.search-box__suggestions-item_selected {
+    position: relative;
+    background-color: @color-neutral-light;
+
+    &::after {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 3px;
+        background-color: @color-secondary;
+        border: none;
+        content: '';
+    }
+    background-repeat: no-repeat;
+}
+
+.search-box__suggestions-item_visited {
+    background-image: url('./clock.svg');
+    background-repeat: no-repeat;
+    background-position: left 6px center;
+    background-size: 24px;
+}
